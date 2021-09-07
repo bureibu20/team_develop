@@ -25,8 +25,12 @@ class AgendasController < ApplicationController
     if current_user = @agenda.user || current_user == @agenda.team.owner
       @agenda.destroy
       redirect_to dashboard_url, notice:"アジェンダを削除しました！"
-      
-    end
+      @users = @agenda.team.members
+      @users.each do |user|
+        AgendaMailer.agenda_mail(user.email).deliver
+      end
+    end    
+  end
 
   private
 
