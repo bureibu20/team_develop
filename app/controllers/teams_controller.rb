@@ -51,6 +51,7 @@ class TeamsController < ApplicationController
     @team = current_user.keep_team
     #params[:owner_id]のowner_idはshow.heml.rbから送られてくる
     @team.update(owner_id: params[:owner_id])
+    TeamMailer.team_mail(@user).deliver
     redirect_to @team, notice: I18n.t('views.messages.owner_change')
   end
 
